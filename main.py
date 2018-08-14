@@ -1,5 +1,5 @@
-from serialClass import serialClass
-from mongoDB import mongoDB
+from Classes.serialClass import serialClass
+from Classes.mongoDB import mongoDB
 
 mongo = mongoDB()
 mongo.insertOne({
