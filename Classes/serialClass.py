@@ -1,5 +1,6 @@
 import serial
 import time
+from serial.tools import list_ports
 
 class serialClass:
 
@@ -10,6 +11,9 @@ class serialClass:
             port=port,
             baudrate=baud
         )
+
+    def getPort(self):
+        return self.port
 
     def write_read_serial(self, serial_command):
         encoded_command = serial_command + '\r\n'
@@ -23,6 +27,9 @@ class serialClass:
             decoded_output += self.ser.read(1).decode()
 
         return decoded_output
+    
+    def list_ports(self):
+        return (list_ports.comports())
     
     def debug_loop(self):
         print('Begin Debug loop\nPlease type in your command, use \'exit\' to quit.')
