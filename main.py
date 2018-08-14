@@ -1,4 +1,9 @@
 from serialClass import serialClass
+from mongoDB import mongoDB
 
-serial_for_modem_1 = serialClass('/dev/ttyUSB0')
-serial_for_modem_1.debug_loop()
+mongo = mongoDB()
+mongo.insertOne({
+    "imprint" : "this space is for an object of imprints",
+     "location": "this space is for an object of locations"
+     })
+mongo.debug_loop()
