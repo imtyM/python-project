@@ -33,17 +33,28 @@ class serialClass:
     
     def collect_fingerprint(self, collection_time=20):
         start_time = time.time()
+        fingerprint = dict()
         while time.time() - start_time < collection_time:
             self._setupCollection()
 
             sample = self._getSample()
+            sample = self._organise_fingerprint(sample)
+            
+            fingerprint = self._add_to_fingerprint(sample, fingerprint)
+
             self._print_serial(sample)
 
         print((time.time() - start_time), 'seconds has elapsed.') 
         print('Processing Fingerprint.......\n')
 
-        fingerprint_Location = input('Input the location of the fingerprint: ')
-        print('\nDone collecting and analysing fingerprint, Storing in database. Remember to backup the data base.')
+        fingerprint_location = input('Input the location of the fingerprint: ')
+        print('Samples collected: ', fingerprint, 'At location', fingerprint_location)
+
+        print('Normalising fingerprint...\n')
+        fingerprint = self._normalise_fingerprint_ave(fingerprint)
+        print('Averaged signal fingerprint: ', fingerprint)
+
+        print('\nDone collecting and analysing fingerprint, Storing in database. Remember to backup the data base.\n')
     
     def debug_loop(self):
         print('Begin Debug loop\nPlease type in your command, use \'exit\' to quit.')
@@ -51,9 +62,7 @@ class serialClass:
         while 1:
             serial_command = input('>>')
             if serial_command == 'exit' or serial_command == 'eixt':
-                print('Exiting Debuging loop, closing port')
-                self._ser.close()
-                print('Port closed, breaking from loop.')
+                print('Exiting Debuging loop')
                 break
             else:
                 serial_output = self.write_read_serial(serial_command)
@@ -64,7 +73,7 @@ class serialClass:
     # Helper functions
     def _print_serial(self,serial_output):
         if serial_output != '':
-            print('+++\n\n' + serial_output + '\n+++\n')
+            print('+++\n\n', serial_output, '\n+++\n')
 
     def _list_ports(self):
         return (list_ports.comports())
@@ -81,3 +90,41 @@ class serialClass:
 
     def _getSample(self): 
         return self.write_read_serial(GET_ENGINEERING_MODE_QUERY)
+
+    def _organise_fingerprint(self, fingerprint):
+        # split eng information lines into array items
+        fingerprint = fingerprint.splitlines()
+
+        #get serving cell line
+        serving_cell_fingerprint = fingerprint[3].replace("\"", "").split(",")
+
+        # strip away verbose serial information
+        neighbor_fingerprints = fingerprint[4:len(fingerprint)-2]
+
+        organised_fingerprint = []
+
+        organised_fingerprint.append([
+            serving_cell_fingerprint[7], serving_cell_fingerprint[2]
+        ]) 
+
+        for line in neighbor_fingerprints:
+            line = line.replace("\"", "").split(",")
+            organised_fingerprint.append([
+                line[4],line[2]
+            ])
+
+        return organised_fingerprint
+        
+    
+    def _add_to_fingerprint(self, sample, fingerprint):
+        for cell in sample:
+            if cell[0] in fingerprint:
+                fingerprint[cell[0]].append(float(cell[1]))
+            else:
+                fingerprint[cell[0]] = [float(cell[1])]
+        return fingerprint
+
+    def _normalise_fingerprint_ave(self,fingerprint):
+        for loc in fingerprint:
+            fingerprint[loc] = sum(fingerprint[loc]) / len(fingerprint[loc])
+        return fingerprint
