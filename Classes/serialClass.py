@@ -46,15 +46,16 @@ class serialClass:
         print('\nDone collecting and analysing fingerprint, Storing in database. Remember to backup the data base.\n')
         return {"fingerprint": fingerprint, "location": fingerprint_location}
     
-    def deep_scan_location(self, iterations, collection_time=10):
-        fingerprint_location = input('Begining fingerprint scan for', iterations, 'iterations and a', collection_time, 'second collection time.\nThis will take roughly', collection_time*iterations , 'seconds.\nPlease input the location for the scan..  ')
+    def deep_scan_location(self, iterations, collection_time=5):
+        print('Begining fingerprint scan for', iterations, 'iterations and a', collection_time, 'second collection time.\nThis will take roughly', collection_time*iterations , 'seconds.')
+        fingerprint_location = input('Please enter a location for the deep scan: ')
         fingerprints = []
         for i in range(iterations):
             fingerprint = self.collect_fingerprint(fingerprint_location, collection_time)
-            print('\niteration', i,'\nFingerprint', fingerprint)
+            print('\nIteration', i+1,'\n\nFingerprint', fingerprint)
 
             fingerprints.append(self._normalise_fingerprint_ave(fingerprint))
-        print('Fingerprints of deep scan', fingerprints)
+        print('\n\nFingerprints of deep scan: \n\n', fingerprints)
         return fingerprints
 
     def  collect_fingerprint(self, location, collection_time=5):
@@ -107,7 +108,7 @@ class serialClass:
     def _organise_fingerprint(self, fingerprint):
         # split eng information lines into array items
         fingerprint = fingerprint.splitlines()
-        print(fingerprint)
+        print('\n',fingerprint, '\n')
 
         #get serving cell line
         # 3 for no echo, 4 for echo
