@@ -26,10 +26,27 @@ class mongoDB:
     
     def updateOne(self, data):
         query = {"location" : data["location"]}
-        update = {
-            "$set" : data
-        }
-        updateOneResult = self.collection.update_one(query, update, upsert=True)
+        # update history
+        for sample in data["fingerprint_set"]:
+            push_string = "fingerprint_set." + sample 
+            update = {
+                "$push" : {
+                    push_string:{
+                        "$each": data["fingerprint_set"][sample],
+                        "$slice" : -50
+                    }
+                }
+            }
+            updateOneResult = self.collection.update_one(query, update, upsert=True)
+        # update primary_print            
+        for sample in data["primary_print"]:
+            push_string = "primary_print." + sample 
+            update = {
+                "$set" : {
+                    push_string: data["primary_print"][sample]
+                }
+            }
+            updateOneResult = self.collection.update_one(query, update, upsert=True)
         return updateOneResult
    
     def insertOneInCollection(self, data, collection):

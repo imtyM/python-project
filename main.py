@@ -6,4 +6,5 @@ myDevice = serialClass('/dev/ttyUSB0')
 myDB = mongoDB()
 
 # myDevice.debug_loop()
-fingerprint = myDevice.deep_scan_location(5)
+fingerprint = myDevice.deep_scan_location(20)
+myDB.updateOne(fingerprint)

@@ -32,7 +32,7 @@ class serialClass:
         return decoded_output
     
     def short_scan_fingerprint(self, collection_time=20):
-        fingerprint = self.collect_fingerprint(collection_time)
+        fingerprint = self._collect_fingerprint(collection_time)
         print('Processing Fingerprint.......\n')
 
         fingerprint_location = input('Input the location of the fingerprint: ')
@@ -47,28 +47,22 @@ class serialClass:
         return {"fingerprint": fingerprint, "location": fingerprint_location}
     
     def deep_scan_location(self, iterations, collection_time=5):
+
         print('Begining fingerprint scan for', iterations, 'iterations and a', collection_time, 'second collection time.\nThis will take roughly', collection_time*iterations , 'seconds.')
         fingerprint_location = input('Please enter a location for the deep scan: ')
         fingerprints = []
         for i in range(iterations):
-            fingerprint = self.collect_fingerprint(fingerprint_location, collection_time)
+            fingerprint = self._collect_fingerprint(fingerprint_location, collection_time)
             print('\nIteration', i+1,'\n\nFingerprint', fingerprint)
 
             fingerprints.append(self._normalise_fingerprint_ave(fingerprint))
         print('\n\nFingerprints of deep scan: \n\n', fingerprints)
-        return fingerprints
 
-    def  collect_fingerprint(self, location, collection_time=5):
-        start_time = time.time()
-        fingerprint = dict()
-        while time.time() - start_time < collection_time:  
-            self._setupCollection()
-            sample = self._getSample()
-            sample = self._organise_fingerprint(sample)
+        print('\n\n DEEP SCAN COMPLETE. ANALYSING DATA SET.\n\n')
+        normalised_print = self._normalise_deep_scan_ave(fingerprints)
+        normalised_print["location"] = fingerprint_location
 
-            fingerprint = self._add_to_fingerprint(sample, fingerprint)
-        return fingerprint
-        
+        return normalised_print
     
     def debug_loop(self):
         print('Begin Debug loop\nPlease type in your command, use \'exit\' to quit.')
@@ -95,6 +89,17 @@ class serialClass:
     def _setupCollection(self):
         set_eng_mode = self.write_read_serial(SET_ENGINEERING_MODE_QUERY)
         self._expect_OK(set_eng_mode)
+
+    def _collect_fingerprint(self, location, collection_time=5):
+        start_time = time.time()
+        fingerprint = dict()
+        while time.time() - start_time < collection_time:  
+            self._setupCollection()
+            sample = self._getSample()
+            sample = self._organise_fingerprint(sample)
+
+            fingerprint = self._add_to_fingerprint(sample, fingerprint)
+        return fingerprint
     
     def _expect_OK(self, result):
         if result.find('OK') != -1 :
@@ -140,8 +145,33 @@ class serialClass:
             else:
                 fingerprint[cell[0]] = [float(cell[1])]
         return fingerprint
+    
+    def _add_to_deep_print(self, sample, deep_print):
+        for cell in sample:
+            if cell in deep_print:
+                deep_print[cell].append(sample[cell])
+            else:
+                deep_print[cell] = [sample[cell]]
+        return deep_print
+
+    def _normalise_deep_scan_ave(self,fingerprints):
+        normalised_set = dict()
+        for sample_set in fingerprints:
+            print('\n\n SAMPLE SET: \n',sample_set)
+            normalised_set = self._add_to_deep_print(sample_set, normalised_set)
+
+        print('This is the not normal set :\n\n', normalised_set)
+
+        primary_print = dict()
+        for sample in normalised_set:
+            primary_print[sample] = sum(normalised_set[sample]) / len(normalised_set[sample])
+
+        print('This is the normalised set :\n\n', primary_print)
+
+        return {"primary_print":primary_print, "fingerprint_set":normalised_set}
 
     def _normalise_fingerprint_ave(self,fingerprint):
         for loc in fingerprint:
             fingerprint[loc] = sum(fingerprint[loc]) / len(fingerprint[loc])
         return fingerprint
+    
