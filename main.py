@@ -3,5 +3,8 @@ from Classes.mongoDB import mongoDB
 from serial.tools import list_ports
 
 myDevice = serialClass('/dev/ttyUSB0')
+myDB = mongoDB()
+
 # myDevice.debug_loop()
-myDevice.collect_fingerprint(5)
+fingerprint = myDevice.short_scan_fingerprint(5)
+myDB.updateOne(fingerprint)

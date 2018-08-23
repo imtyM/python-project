@@ -23,6 +23,14 @@ class mongoDB:
     def insertOne(self, data):
         insertOneResult = self.collection.insert_one(data)
         return insertOneResult
+    
+    def updateOne(self, data):
+        query = {"location" : data["location"]}
+        update = {
+            "$set" : data
+        }
+        updateOneResult = self.collection.update_one(query, update, upsert=True)
+        return updateOneResult
    
     def insertOneInCollection(self, data, collection):
         insertOneResult = self.dataBase[collection].insert_one(data)
@@ -68,7 +76,8 @@ class mongoDB:
                     print(data)
 
             elif cmd == 'readdb':
-                print('Printing all collections in DB: ' + self.dataBaseName)
+                print('Printing all collections in DB: ' + self.collectionName)
+                
                 self.dataBase.list_collection_names()
 
             else:

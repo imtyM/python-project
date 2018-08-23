@@ -31,20 +31,8 @@ class serialClass:
 
         return decoded_output
     
-    def collect_fingerprint(self, collection_time=20):
-        start_time = time.time()
-        fingerprint = dict()
-        while time.time() - start_time < collection_time:
-            self._setupCollection()
-
-            sample = self._getSample()
-            sample = self._organise_fingerprint(sample)
-            
-            fingerprint = self._add_to_fingerprint(sample, fingerprint)
-
-            self._print_serial(sample)
-
-        print((time.time() - start_time), 'seconds has elapsed.') 
+    def short_scan_fingerprint(self, collection_time=20):
+        fingerprint = self.collect_fingerprint(collection_time)
         print('Processing Fingerprint.......\n')
 
         fingerprint_location = input('Input the location of the fingerprint: ')
@@ -52,9 +40,34 @@ class serialClass:
 
         print('Normalising fingerprint...\n')
         fingerprint = self._normalise_fingerprint_ave(fingerprint)
-        print('Averaged signal fingerprint: ', fingerprint)
+
+        print('Averaged signal fingerprint: ', { "fingerprint": fingerprint, "location" : fingerprint_location})
 
         print('\nDone collecting and analysing fingerprint, Storing in database. Remember to backup the data base.\n')
+        return {"fingerprint": fingerprint, "location": fingerprint_location}
+    
+    def deep_scan_location(self, iterations, collection_time=10):
+        fingerprint_location = input('Begining fingerprint scan for', iterations, 'iterations and a', collection_time, 'second collection time.\nThis will take roughly', collection_time*iterations , 'seconds.\nPlease input the location for the scan..  ')
+        fingerprints = []
+        for i in range(iterations):
+            fingerprint = self.collect_fingerprint(fingerprint_location, collection_time)
+            print('\niteration', i,'\nFingerprint', fingerprint)
+
+            fingerprints.append(self._normalise_fingerprint_ave(fingerprint))
+        print('Fingerprints of deep scan', fingerprints)
+        return fingerprints
+
+    def  collect_fingerprint(self, location, collection_time=5):
+        start_time = time.time()
+        fingerprint = dict()
+        while time.time() - start_time < collection_time:  
+            self._setupCollection()
+            sample = self._getSample()
+            sample = self._organise_fingerprint(sample)
+
+            fingerprint = self._add_to_fingerprint(sample, fingerprint)
+        return fingerprint
+        
     
     def debug_loop(self):
         print('Begin Debug loop\nPlease type in your command, use \'exit\' to quit.')
@@ -94,12 +107,15 @@ class serialClass:
     def _organise_fingerprint(self, fingerprint):
         # split eng information lines into array items
         fingerprint = fingerprint.splitlines()
+        print(fingerprint)
 
         #get serving cell line
-        serving_cell_fingerprint = fingerprint[3].replace("\"", "").split(",")
+        # 3 for no echo, 4 for echo
+        serving_cell_fingerprint = fingerprint[4].replace("\"", "").split(",")
 
         # strip away verbose serial information
-        neighbor_fingerprints = fingerprint[4:len(fingerprint)-2]
+        # 4 for no echo, 5 for echo
+        neighbor_fingerprints = fingerprint[5:len(fingerprint)-2]
 
         organised_fingerprint = []
 
