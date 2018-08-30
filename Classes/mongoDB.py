@@ -42,24 +42,19 @@ class mongoDB:
         for sample in data["primary_print"]:
             push_string = "primary_print." + sample 
             update = {
-                "$set" : {
+                "$set" : { 
                     push_string: data["primary_print"][sample]
                 }
             }
             updateOneResult = self.collection.update_one(query, update, upsert=True)
         return updateOneResult
    
-    def insertOneInCollection(self, data, collection):
-        insertOneResult = self.dataBase[collection].insert_one(data)
-        return insertOneResult
-
-    def insertMany(self, data):
-        insertManyResult = self.collection.insert_many(data)
-        return insertManyResult
-    
-    def insertManyInCollection(self, data, collection):
-        insertManyResult = self.dataBase[collection].insert_many(data)
-        return insertManyResult
+    def findByRegex(self, regex):
+       query = {
+           "location" : {"$regex": regex}
+       }
+       findResult = self.collection.find(query)
+       return findResult
 
     def debug_loop(self):
         print(r"""
