@@ -1,9 +1,8 @@
 import pymongo
 
 class mongoDB:
-
     
-    def __init__(self, host='localhost', port=27017, dataBase='projectDB', collection='fingerprints'):
+    def __init__(self, collection,dataBase='projectDB', host='localhost', port=27017):
         self.collectionName = collection
         self.dataBaseName = dataBase
         self.hostName = host
@@ -24,7 +23,7 @@ class mongoDB:
         insertOneResult = self.collection.insert_one(data)
         return insertOneResult
     
-    def updateOne(self, data):
+    def updateFingerprint(self, data):
         query = {"location" : data["location"]}
         # update history
         for sample in data["fingerprint_set"]:
@@ -33,11 +32,23 @@ class mongoDB:
                 "$push" : {
                     push_string:{
                         "$each": data["fingerprint_set"][sample],
-                        "$slice" : -50
+                        "$slice" : -500
                     }
                 }
             }
             updateOneResult = self.collection.update_one(query, update, upsert=True)
+
+            query = {
+                "known_cells_list" : "known_cells_list"
+            }
+            update = {
+                "$addToSet": {
+                    "list": {
+                        "$each":sample
+                    } 
+                }
+            }
+            self.collection.update_one(query, update, upsert=True)
         # update primary_print            
         for sample in data["primary_print"]:
             push_string = "primary_print." + sample 
@@ -55,6 +66,20 @@ class mongoDB:
        }
        findResult = self.collection.find(query)
        return findResult
+    
+    def findByQuery(self, query):
+        return self.collection.find(query)
+
+    def queryOnDeviation(self, input_data, deviation, fieldString="primary_print."):
+        query = dict()
+        primaryString = fieldString
+        for cell in input_data:
+            query[primaryString + cell] = {"$gt" : input_data[cell] - deviation, "$lte": input_data[cell] + deviation}
+        
+        print('Built query : \n', query, '\n')
+
+        return self.findByQuery(query)
+        
 
     def debug_loop(self):
         print(r"""
