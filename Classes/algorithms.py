@@ -10,12 +10,15 @@ class algorithms:
         cursor = None
         deviation = 0
 
-        while doc_count == 0 : 
+        while doc_count == 0 and deviation < 15 : 
             cursor = self.db.queryOnDeviation(inputData, deviation, self.primaryString)
             doc_count = cursor.count()
             deviation += deviationStep
 
-        print('Estimated location as : ', cursor.next()["location"], 'count of :', doc_count, 'with deviation of : ', deviation)
+        if doc_count == 0:
+            print('No Docs found...\nWith a deviation of : ', deviation)
+        else:
+            print('Estimated location as : ', cursor.next()["location"], 'count of :', doc_count, 'with deviation of : ', deviation)
 
 
     
@@ -23,6 +26,9 @@ class algorithms:
         print('Processing Location\n\n')
 
         self.processQuery(inputData)
+
+        print('\n\n\nDone processing location\n\n\n')
+
 
 
 

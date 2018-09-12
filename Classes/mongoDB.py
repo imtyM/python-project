@@ -37,18 +37,6 @@ class mongoDB:
                 }
             }
             updateOneResult = self.collection.update_one(query, update, upsert=True)
-
-            query = {
-                "known_cells_list" : "known_cells_list"
-            }
-            update = {
-                "$addToSet": {
-                    "list": {
-                        "$each":sample
-                    } 
-                }
-            }
-            self.collection.update_one(query, update, upsert=True)
         # update primary_print            
         for sample in data["primary_print"]:
             push_string = "primary_print." + sample 

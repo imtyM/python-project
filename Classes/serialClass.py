@@ -15,21 +15,11 @@ class serialClass:
             baudrate=baud
         )
 
-    def getPort(self):
-        return self._port
 
-    def write_read_serial(self, serial_command, wait_time=0.3):
-        encoded_command = serial_command + '\r\n'
-        encoded_command = encoded_command.encode()
-
-        self._ser.write(encoded_command)
-        time.sleep(wait_time)
-
-        decoded_output = ''
-        while self._ser.inWaiting() > 0:
-            decoded_output += self._ser.read(1).decode()
-
-        return decoded_output
+    def scan_position(self, collection_time=5):
+        fingerprint = self._collect_fingerprint(collection_time)
+        fingerprint = self._normalise_fingerprint_ave(fingerprint)
+        return fingerprint
     
     def short_scan_fingerprint(self, collection_time=20):
         fingerprint = self._collect_fingerprint(collection_time)
@@ -79,6 +69,23 @@ class serialClass:
         print('Broke from loop, goodbye.') 
 
     # Helper functions
+
+    def write_read_serial(self, serial_command, wait_time=0.3):
+        encoded_command = serial_command + '\r\n'
+        encoded_command = encoded_command.encode()
+
+        self._ser.write(encoded_command)
+        time.sleep(wait_time)
+
+        decoded_output = ''
+        while self._ser.inWaiting() > 0:
+            decoded_output += self._ser.read(1).decode()
+
+        return decoded_output
+
+    def getPort(self):
+        return self._port
+
     def _print_serial(self,serial_output):
         if serial_output != '':
             print('+++\n\n', serial_output, '\n+++\n')
@@ -162,6 +169,7 @@ class serialClass:
 
         print('This is the not normal set :\n\n', normalised_set)
 
+        #  currently just finding the average at a location. We may want to use more than one search point. 
         primary_print = dict()
         for sample in normalised_set:
             primary_print[sample] = sum(normalised_set[sample]) / len(normalised_set[sample])
