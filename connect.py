@@ -18,5 +18,8 @@ print('Succesfuly connected to',number_connected_devices, 'devices')
 for index,usb_modem in enumerate(usb_modems):
     print('Device', index, 'at', usb_modem.getPort())
 
-print('opening debug loop on first device')
-usb_modems[0].debug_loop()
+if number_connected_devices > 0 :
+    print('opening debug loop on first device')
+    usb_modems[0].debug_loop()
+else:
+    print('No Connected devices')
