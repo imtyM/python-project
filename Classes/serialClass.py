@@ -111,7 +111,7 @@ class serialClass:
         set_eng_mode = self.write_read_serial(SET_ENGINEERING_MODE_QUERY)
         self._expect_OK(set_eng_mode)
         timeout = 10
-        while self._expect_OK(set_eng_mode) == False && timeout < 10:
+        while self._expect_OK(set_eng_mode) == False and timeout < 10:
             timeout += 1
             set_eng_mode = self.write_read_serial(SET_ENGINEERING_MODE_QUERY)
 
