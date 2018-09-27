@@ -2,9 +2,10 @@ from Classes.serialClass import serialClass
 from Classes.mongoDB import mongoDB
 from serial.tools import list_ports
 from Classes.algorithms import algorithms
+import os
 
 myDevice = serialClass('/dev/ttyUSB0')
-myDB = mongoDB('dev')
+myDB = mongoDB('field_collection_170918')
 processor = algorithms(myDB)
 
 while True:

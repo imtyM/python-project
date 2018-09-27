@@ -1,4 +1,6 @@
 
+import os
+
 class algorithms:
 
     def __init__(self, DBinstance, primary_string="primary_print."):
@@ -10,7 +12,7 @@ class algorithms:
         cursor = None
         deviation = 0
 
-        while doc_count == 0 and deviation < 15 : 
+        while doc_count == 0 and deviation < 30 : 
             cursor = self.db.queryOnDeviation(inputData, deviation, self.primaryString)
             doc_count = cursor.count()
             deviation += deviationStep
@@ -18,7 +20,9 @@ class algorithms:
         if doc_count == 0:
             print('No Docs found...\nWith a deviation of : ', deviation)
         else:
-            print('Estimated location as : ', cursor.next()["location"], 'count of :', doc_count, 'with deviation of : ', deviation)
+            locale = cursor.next()["location"]
+            print('Estimated location as : ', locale, 'count of :', doc_count, 'with deviation of : ', deviation)
+            os.system('spd-say '+ locale)
 
 
     

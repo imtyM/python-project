@@ -68,8 +68,8 @@ class serialClass:
                 
         print('Broke from loop, goodbye.') 
 
-    # Helper functions
 
+    # Helper functions
     def write_read_serial(self, serial_command, wait_time=0.3):
         encoded_command = serial_command + '\r\n'
         encoded_command = encoded_command.encode()
@@ -81,6 +81,20 @@ class serialClass:
         while self._ser.inWaiting() > 0:
             decoded_output += self._ser.read(1).decode()
 
+        return decoded_output
+
+    def debug_loop_read(self):
+        print('Begin Debug loop\nPlease type in your command, use \'exit\' to quit.')
+        while 1:
+            serial_output = self.read_serial()
+            self._print_serial(serial_output)
+
+    def read_serial(self,wait_time=0.3):
+        time.sleep(wait_time)
+        decoded_output = ''
+        while self._ser.inWaiting() > 0:
+            decoded_output += self._ser.read(1).decode()
+        
         return decoded_output
 
     def getPort(self):
