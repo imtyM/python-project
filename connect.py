@@ -22,4 +22,4 @@ if number_connected_devices > 0 :
     print('opening debug loop on first device')
     usb_modems[0].debug_loop()
 else:
-    print('No Connected devices')
+    print('No Connected devicess')
