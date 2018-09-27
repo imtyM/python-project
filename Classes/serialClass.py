@@ -7,7 +7,7 @@ SET_ENGINEERING_MODE_QUERY = 'AT+CENG=1,1'
 
 class serialClass:
 
-    def __init__(self, port, baud=115200):
+    def __init__(self, port, baud=19200):
         self._port = port
         self._baud = baud
         self._ser = serial.Serial(
