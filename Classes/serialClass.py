@@ -114,8 +114,9 @@ class serialClass:
         while self._expect_OK(set_eng_mode) == False and timeout < 10:
             timeout += 1
             set_eng_mode = self.write_read_serial(SET_ENGINEERING_MODE_QUERY)
-        print('Error, Timeout expecting an OK')
-        exit()
+        if timeout == 10
+            print('Error, Timeout expecting an OK')
+            exit()
 
 
     def _collect_fingerprint(self, location, collection_time=5):
