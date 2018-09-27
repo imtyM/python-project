@@ -131,6 +131,7 @@ class serialClass:
         return fingerprint
     
     def _expect_OK(self, result):
+        print(result.find('OK'))
         if result.find('OK') != -1 :
             return True
         return False
