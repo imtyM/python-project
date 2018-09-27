@@ -110,6 +110,11 @@ class serialClass:
     def _setupCollection(self):
         set_eng_mode = self.write_read_serial(SET_ENGINEERING_MODE_QUERY)
         self._expect_OK(set_eng_mode)
+        timeout = 10
+        while self._expect_OK(set_eng_mode) == False && timeout < 10:
+            timeout += 1
+            set_eng_mode = self.write_read_serial(SET_ENGINEERING_MODE_QUERY)
+
 
     def _collect_fingerprint(self, location, collection_time=5):
         start_time = time.time()
@@ -124,9 +129,10 @@ class serialClass:
     
     def _expect_OK(self, result):
         if result.find('OK') != -1 :
-            return
-        print('ERROR : EXPECTED AN OK, BUT DID NOT FIND ONE. THIS ERROR WILL SOON BECOME AN EXCEPTION.')
-        exit()
+            return True
+        return False
+        # print('ERROR : EXPECTED AN OK, BUT DID NOT FIND ONE. THIS ERROR WILL SOON BECOME AN EXCEPTION.')
+        # exit()
 
     def _getSample(self): 
         return self.write_read_serial(GET_ENGINEERING_MODE_QUERY)
