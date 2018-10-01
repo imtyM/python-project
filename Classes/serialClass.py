@@ -77,12 +77,20 @@ class serialClass:
 
         self._ser.write(encoded_command)
         time.sleep(wait_time)
-
+        self._wait_for_response(wait_time)
         decoded_output = ''
         while self._ser.inWaiting() > 0:
             decoded_output += self._ser.read(1).decode()
 
         return decoded_output
+    
+    def _wait_for_response(self, wait_time):
+        waiting = 0
+        while self._ser.inWaiting() <= 0 and waiting < 10:
+            time.sleep(wait_time)
+            waiting += 1
+        print('TIMEOUT WAITING FOR RESPONSE')
+        exit()
 
     def debug_loop_read(self):
         print('Begin Debug loop\nPlease type in your command, use \'exit\' to quit.')
