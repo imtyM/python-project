@@ -109,7 +109,7 @@ class serialClass:
 
     def _setupCollection(self):
         set_eng_mode = self.write_read_serial(SET_ENGINEERING_MODE_QUERY)
-        if !self._expect_OK(set_eng_mode):
+        if not self._expect_OK(set_eng_mode):
             print('ERROR : EXPECTED AN OK, BUT DID NOT FIND ONE. THIS ERROR WILL SOON BECOME AN EXCEPTION.')
             exit()
 
