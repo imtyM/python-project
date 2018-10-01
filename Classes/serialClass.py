@@ -115,7 +115,7 @@ class serialClass:
             tries += 1
             print('No OK from device, trying again... ', tries )
 
-        if tries = 10:
+        if tries == 10:
             print('ERROR : EXPECTED AN OK, BUT DID NOT FIND ONE. THIS ERROR WILL SOON BECOME AN EXCEPTION.')
             exit()
 
