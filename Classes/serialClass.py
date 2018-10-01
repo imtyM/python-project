@@ -118,6 +118,13 @@ class serialClass:
         if tries == 10:
             print('ERROR : EXPECTED AN OK, BUT DID NOT FIND ONE. THIS ERROR WILL SOON BECOME AN EXCEPTION.')
             exit()
+        self._clear_buffer()
+
+    def _clear_buffer(self):
+        decoded_output = ''
+        while self._ser.inWaiting() > 0:
+            decoded_output += self._ser.read(1).decode()
+        print('Clearing buffer\n\nThe following was in the buffer: \n\n', decoded_output, '\n\n')
 
 
     def _collect_fingerprint(self, location, collection_time=5):
