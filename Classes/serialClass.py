@@ -94,6 +94,7 @@ class serialClass:
             char_count = GET_ENGINEERING_MODE_QUERY_CHAR_COUNT
             
         while self._ser.in_waiting < char_count and waiting < 10:
+            print('GOT ', self._ser.in_waiting, 'characters, expecting ', char_count, '\n\n')
             time.sleep(wait_time)
             waiting += 1
 
