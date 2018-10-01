@@ -14,6 +14,7 @@ class serialClass:
             port=port,
             baudrate=baud
         )
+        self.isSetToEngModeQuery = False
 
 
     def scan_position(self, collection_time=5):
@@ -108,6 +109,8 @@ class serialClass:
         return (list_ports.comports())
 
     def _setupCollection(self):
+        if self.isSetToEngModeQuery:
+            return
         set_eng_mode = self.write_read_serial(SET_ENGINEERING_MODE_QUERY)
         tries = 0
         while not self._expect_OK(set_eng_mode) and tries < 10:
@@ -119,6 +122,7 @@ class serialClass:
             print('ERROR : EXPECTED AN OK, BUT DID NOT FIND ONE. THIS ERROR WILL SOON BECOME AN EXCEPTION.')
             exit()
         self._clear_buffer()
+        self.isSetToEngModeQuery = True
 
     def _clear_buffer(self):
         decoded_output = ''
