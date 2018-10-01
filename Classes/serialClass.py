@@ -109,9 +109,16 @@ class serialClass:
 
     def _setupCollection(self):
         set_eng_mode = self.write_read_serial(SET_ENGINEERING_MODE_QUERY)
-        if not self._expect_OK(set_eng_mode):
+        tries = 0
+        while not self._expect_OK(set_eng_mode) and tries < 10:
+            set_eng_mode = self.write_read_serial(SET_ENGINEERING_MODE_QUERY)
+            tries += 1
+            print('No OK from device, trying again... ', tries )
+
+        if tries = 10:
             print('ERROR : EXPECTED AN OK, BUT DID NOT FIND ONE. THIS ERROR WILL SOON BECOME AN EXCEPTION.')
             exit()
+
 
     def _collect_fingerprint(self, location, collection_time=5):
         start_time = time.time()
