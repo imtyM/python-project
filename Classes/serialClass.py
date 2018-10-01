@@ -124,7 +124,7 @@ class serialClass:
         decoded_output = ''
         while self._ser.inWaiting() > 0:
             decoded_output += self._ser.read(1).decode()
-        print('Clearing buffer\n\nThe following was in the buffer: \n\n', decoded_output, '\n\n')
+        print('Clearing buffer\n\nThe following was in the buffer: \n\n', decoded_output, '\nend clear\n')
 
 
     def _collect_fingerprint(self, location, collection_time=5):
