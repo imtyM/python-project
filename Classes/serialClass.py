@@ -3,6 +3,7 @@ import time
 from serial.tools import list_ports
 
 GET_ENGINEERING_MODE_QUERY = 'AT+CENG?'
+GET_ENGINEERING_MODE_QUERY_CHAR_COUNT = 324
 SET_ENGINEERING_MODE_QUERY = 'AT+CENG=1,1'
 
 class serialClass:
@@ -77,16 +78,22 @@ class serialClass:
 
         self._ser.write(encoded_command)
         time.sleep(wait_time)
-        self._wait_for_response(wait_time)
+        self._wait_for_response(wait_time, serial_command)
+        print(self._ser.in_waiting)
         decoded_output = ''
         while self._ser.in_waiting > 0:
             decoded_output += self._ser.read(1).decode()
 
         return decoded_output
     
-    def _wait_for_response(self, wait_time):
+    def _wait_for_response(self, wait_time, serial_command):
         waiting = 0
-        while self._ser.in_waiting <= 0 and waiting < 10:
+        char_count = 1
+
+        if serial_command == GET_ENGINEERING_MODE_QUERY:
+            char_count = GET_ENGINEERING_MODE_QUERY_CHAR_COUNT
+            
+        while self._ser.in_waiting < char_count and waiting < 10:
             time.sleep(wait_time)
             waiting += 1
 
