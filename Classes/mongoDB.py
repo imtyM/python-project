@@ -1,5 +1,7 @@
 import pymongo
 
+KNOWN_CELLS_LAB = ['ef39', 'f4b2', 'da36', 'ea75', '35fd', '51a6', '51a5', 'd9dd', 'ef61', '4de6', 'bbd2', '471a', '403a', '4de7', '4de5', '4db5', 'cbb7', '46f2', 'e77f', '46df', '46dd', '51a7', '4db3', '4648', '3a68', 'cbb9', '4dc8', 'ccf7']
+
 class mongoDB:
     
     def __init__(self, collection,dataBase='projectDB', host='localhost', port=27017):
@@ -22,6 +24,9 @@ class mongoDB:
     def insertOne(self, data):
         insertOneResult = self.collection.insert_one(data)
         return insertOneResult
+    
+    def findAll(self):
+        return self.collection.find()
     
     def updateFingerprint(self, data):
         query = {"location" : data["location"]}
@@ -62,7 +67,8 @@ class mongoDB:
         query = dict()
         primaryString = fieldString
         for cell in input_data:
-            query[primaryString + cell] = {"$gt" : input_data[cell] - deviation, "$lte": input_data[cell] + deviation}
+            if cell in KNOWN_CELLS_LAB:
+                query[primaryString + cell] = {"$gt" : input_data[cell] - deviation, "$lte": input_data[cell] + deviation}
         
         print('Built query : \n', query, '\n')
 

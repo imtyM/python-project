@@ -5,7 +5,7 @@ from Classes.algorithms import algorithms
 import os
 
 myDevice = serialClass('/dev/ttyUSB0')
-myDB = mongoDB('field_collection_170918')
+myDB = mongoDB('lab')
 processor = algorithms(myDB)
 
 while True:

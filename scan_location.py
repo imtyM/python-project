@@ -4,14 +4,14 @@ from serial.tools import list_ports
 import os
 
 myDevice = serialClass('/dev/ttyUSB0')
-myDB = mongoDB('field_collection_170918')
+myDB = mongoDB('lab')
 
 # myDevice.debug_loop()
-fingerprint = myDevice.deep_scan_location(40)
+fingerprint = myDevice.deep_scan_location(10)
 # fingerprint = myDevice.short_scan_fingerprint(5)
 myDB.updateFingerprint(fingerprint)
 
 print(fingerprint)
-os.system('spd-say "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaachuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu"')
+os.system('spd-say "w w w w w w w w w w w w w"')
 
 
