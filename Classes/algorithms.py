@@ -14,8 +14,7 @@ class algorithms:
         cursor = None
         deviation = 0
         found_locations = []
-
-
+        break_location = None
 
         cells = self._getCellsList(inputData)
         cell_permutations = self._getPermutations(cells)
@@ -34,16 +33,17 @@ class algorithms:
                     # if we get a really strong match, break and accept it. 
                     if len(cellList) > 3 and deviation < 4:
                         print('BREAKING with deviation of ', deviation)
-                        print('Location of ', cursor.next()["location"]) 
+                        break_location = cursor.next()["location"] 
                         break
                     for doc in cursor:
                         found_locations.append(doc["location"])
 
             deviation += deviationStep
 
+        common = self._mostCommon(found_locations)
         print('found locations ', found_locations)
         print('most common location: ', self._mostCommon( found_locations ))
-        # self._processResults(doc_count, deviation, cursor)
+        self._processResults(doc_count, deviation, common, break_location)
 
     def _mostCommon(self, locs):
         if len(locs) > 0:
@@ -82,13 +82,17 @@ class algorithms:
         return cells
 
 
-    def _processResults(self, doc_count, deviation, cursor):
+    def _processResults(self, doc_count, deviation, common, break_location):
         if doc_count == 0:
             print('No Docs found...\nWith a deviation of : ', deviation)
         else:
-            locale = cursor.next()["location"]
-            print('Estimated location as : ', locale, 'count of :', doc_count, 'with deviation of : ', deviation)
-            os.system('spd-say '+ locale)
+            if break_location is not None:
+                print('Estimated location as : ', break_location, 'count of :', doc_count, 'with deviation of : ', deviation)
+                os.system('spd-say '+ break_location)
+            else:
+                print('Estimated location as : ', common, 'count of :', doc_count, 'with deviation of : ', deviation)
+                os.system('spd-say '+ common)
+                
     
     def _buildQuery(self, cells, input_data, deviation, fieldString="primary_print."):
         query = dict()
