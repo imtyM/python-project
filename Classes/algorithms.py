@@ -87,10 +87,10 @@ class algorithms:
             print('No Docs found...\nWith a deviation of : ', deviation)
         else:
             if break_location is not None:
-                print('Estimated location as : ', break_location, 'count of :', doc_count, 'with deviation of : ', deviation)
+                print('Estimated break location as : ', break_location, 'count of :', doc_count, 'with deviation of : ', deviation)
                 os.system('spd-say '+ break_location)
             else:
-                print('Estimated location as : ', common, 'count of :', doc_count, 'with deviation of : ', deviation)
+                print('Estimated common location as : ', common, 'count of :', doc_count, 'with deviation of : ', deviation)
                 os.system('spd-say '+ common)
                 
     
