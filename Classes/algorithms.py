@@ -108,7 +108,7 @@ class algorithms:
     def debugProcess(self, inputData):
         print('Processing Location\n\n')
 
-        self.processQuery(inputData)
+        return self.processQuery(inputData)
 
         print('\n\n\nDone processing location\n\n\n')
 
