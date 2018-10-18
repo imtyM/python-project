@@ -43,7 +43,7 @@ class algorithms:
         common = self._mostCommon(found_locations)
         print('found locations ', found_locations)
         print('most common location: ', common)
-        self._processResults(loc_len,doc_count, deviation, common, break_location)
+        return self._processResults(loc_len,doc_count, deviation, common, break_location)
 
     def _mostCommon(self, locs):
         if len(locs) > 0:
@@ -89,9 +89,11 @@ class algorithms:
             if break_location is not None:
                 print('Estimated break location as : ', break_location, 'count of :', doc_count, 'with deviation of : ', deviation)
                 os.system('spd-say '+ break_location)
+                return break_location
             else:
                 print('Estimated common location as : ', common, 'count of :', doc_count, 'with deviation of : ', deviation)
                 os.system('spd-say '+ common)
+                return common
                 
     
     def _buildQuery(self, cells, input_data, deviation, fieldString="primary_print."):

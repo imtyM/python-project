@@ -13,6 +13,7 @@ while True:
 
     print(fingerprint)
 
-    processor.debugProcess(fingerprint)
+    found_location = processor.debugProcess(fingerprint)
+    print('THIS IS THE FOUND LOCATION: ', found_location, '\n\n\n\n\n')
 
 
