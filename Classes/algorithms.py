@@ -39,11 +39,11 @@ class algorithms:
                         found_locations.append(doc["location"])
 
             deviation += deviationStep
-
+        loc_len = len(found_locations)
         common = self._mostCommon(found_locations)
         print('found locations ', found_locations)
-        print('most common location: ', self._mostCommon( found_locations ))
-        self._processResults(doc_count, deviation, common, break_location)
+        print('most common location: ', common)
+        self._processResults(loc_len,doc_count, deviation, common, break_location)
 
     def _mostCommon(self, locs):
         if len(locs) > 0:
@@ -82,8 +82,8 @@ class algorithms:
         return cells
 
 
-    def _processResults(self, doc_count, deviation, common, break_location):
-        if doc_count == 0:
+    def _processResults(self,loc_len, doc_count, deviation, common, break_location):
+        if doc_count == 0 and loc_len == 0:
             print('No Docs found...\nWith a deviation of : ', deviation)
         else:
             if break_location is not None:
