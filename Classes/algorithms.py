@@ -10,7 +10,7 @@ class algorithms:
         self.db = DBinstance
         self.primaryString = primary_string
 
-    def processQuery(self, inputData, deviationStep = 0.25):
+    def processQuery(self, inputData, deviationStep = 1):
         doc_count = 0
         cursor = None
         deviation = 0
@@ -19,13 +19,11 @@ class algorithms:
 
         cells = self._getCellsList(inputData)
         cell_permutations = self._getPermutations(cells)
-        print('CELL PERMUTATIONS ', cell_permutations)
 
         while doc_count == 0 and deviation < 10 : 
             
             for cellList in cell_permutations:
                 print('CURRENT CELL LIST: ', cellList)
-
                 query = self._buildQuery(cellList, inputData, deviation)
                 cursor = self.db.findByQuery(query)
                 doc_count = cursor.count()
@@ -78,7 +76,7 @@ class algorithms:
     def _getCellsList(self, inputData):
         cells = []
         for cell in inputData:
-            if cell in KNOWN_CELLS_REAL:
+            if cell in KNOWN_CELLS_LAB:
                 cells.append(cell)
         return cells
 
