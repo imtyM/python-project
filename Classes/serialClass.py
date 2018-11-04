@@ -130,8 +130,8 @@ class serialClass:
         if self.isSetToEngModeQuery:
             return
         tries = 0
+        set_eng_mode = self.write_read_serial(SET_ENGINEERING_MODE_QUERY)
         while not self._expect_OK(set_eng_mode) and tries < 10:
-            set_eng_mode = self.write_read_serial(SET_ENGINEERING_MODE_QUERY)
             set_eng_mode = self.write_read_serial(SET_ENGINEERING_MODE_QUERY)
             tries += 1
             print('No OK from device, trying again... ', tries )
