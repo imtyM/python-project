@@ -30,7 +30,7 @@ class algorithms:
 
                 if doc_count > 0:
                     # if we get a really strong match, break and accept it. 
-                    if len(cellList) > 3 and deviation < 4:
+                    if len(cellList) > 3 and deviation < 5:
                         print('BREAKING with deviation off ', deviation)
                         break_location = cursor.next()["location"] 
                         break
