@@ -19,6 +19,8 @@ class algorithms:
 
         cells = self._getCellsList(inputData)
         cell_permutations = self._getPermutations(cells)
+        if len(cell_permutations) == 0:
+            return 'NO CELLS,NO lOCATION'
 
         while doc_count == 0 and deviation < 10 : 
             
