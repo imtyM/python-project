@@ -76,7 +76,7 @@ class algorithms:
     def _getCellsList(self, inputData):
         cells = []
         for cell in inputData:
-            if cell in KNOWN_CELLS_LAB:
+            if cell in KNOWN_CELLS_REAL:
                 cells.append(cell)
         return cells
 
