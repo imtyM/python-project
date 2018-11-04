@@ -95,6 +95,7 @@ class algorithms:
                 print('Estimated common location as : ', common, 'count of :', doc_count, 'with deviation of : ', deviation)
                 os.system('spd-say '+ common)
                 return common
+        return 'NO LOCATION FOUND.'
                 
     
     def _buildQuery(self, cells, input_data, deviation, fieldString="primary_print."):

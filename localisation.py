@@ -7,7 +7,8 @@ import requests
 import json
 #  https://8pi5e8eqs7.execute-api.eu-west-1.amazonaws.com/latest
 myDevice = serialClass('/dev/ttyUSB0')
-myDB = mongoDB('lab')
+#myDB = mongoDB('lab')
+myDB = mongoDB('field_collection_170918')
 processor = algorithms(myDB)
 
 while True:
