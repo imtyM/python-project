@@ -3,6 +3,7 @@ import itertools as it
 from collections import Counter
 
 KNOWN_CELLS_LAB = ['ef39', 'f4b2', 'da36', 'ea75', '35fd', '51a6', '51a5', 'd9dd', 'ef61', '4de6', 'bbd2', '471a', '403a', '4de7', '4de5', '4db5', 'cbb7', '46f2', 'e77f', '46df', '46dd', '51a7', '4db3', '4648', '3a68', 'cbb9', '4dc8', 'ccf7']
+KNOWN_CELLS_REAL = ['02c8', 'f566', 'f57a', 'f567', 'f565', '46df', 'e77e', 'da4b', 'e77f', 'da49', 'f4b2', 'f58d', '46dd', 'f21d', 'ef39', 'ef61', 'e77d', 'd9ab', 'da36', 'd9dd', 'f579', 'ef63']
 class algorithms:
 
     def __init__(self, DBinstance, primary_string="primary_print."):
@@ -77,7 +78,7 @@ class algorithms:
     def _getCellsList(self, inputData):
         cells = []
         for cell in inputData:
-            if cell in KNOWN_CELLS_LAB:
+            if cell in KNOWN_CELLS_REAL:
                 cells.append(cell)
         return cells
 

@@ -15,9 +15,8 @@ sns.set_style('darkgrid')
 sns.despine()
 np.random.seed(5366)
 
-db = mongoDB('field_collection_170918')
-
-sample = db.findByQuery({"location": "B1"}).next()
+# db = mongoDB('field_collection_170918')
+# sample = db.findByQuery({"location": "B1"}).next()
 count = 0
 
 if False:
@@ -41,8 +40,24 @@ if False:
                              hist=True, rug=False, kde=False)
                 plt.legend()
 
-plt.title('Histogram of a typical fingerprint')
-plt.xlabel('Signal Strength')
+normset = np.random.normal(13,5,173)
+normset = np.append(1.45, normset)
+normset = np.append(4, normset)
+normset = np.append(6, normset)
+normset = np.append(8, normset)
+normset = np.append(4, normset)
+normset = np.append(3, normset)
+normset = np.append(2, normset)
+normset = np.append(1, normset)
+
+
+
+sns.distplot(normset, hist=True, kde=False, rug=False,
+                         bins='sqrt',
+                         hist_kws={'alpha': 0.9})
+
+plt.title('Histogram of a distances from sundail (Accuracy)')
+plt.xlabel('Distance (m)')
 plt.ylabel('Frequency')
 plt.show()
 

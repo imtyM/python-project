@@ -17,6 +17,19 @@ class serialClass:
         )
         self.isSetToEngModeQuery = False
 
+    def write_read_serial(self, serial_command, wait_time=0.3):
+        encoded_command = serial_command + '\r\n'
+        encoded_command = encoded_command.encode()
+
+        self._ser.write(encoded_command)
+        time.sleep(wait_time)
+        self._wait_for_response(wait_time, serial_command)
+        print(self._ser.in_waiting)
+        decoded_output = ''
+        while self._ser.in_waiting > 0:
+            decoded_output += self._ser.read(1).decode()
+
+        return decoded_output
 
     def scan_position(self, collection_time=5):
         fingerprint = self._collect_fingerprint(collection_time)
@@ -72,19 +85,6 @@ class serialClass:
 
 
     # Helper functions
-    def write_read_serial(self, serial_command, wait_time=0.3):
-        encoded_command = serial_command + '\r\n'
-        encoded_command = encoded_command.encode()
-
-        self._ser.write(encoded_command)
-        time.sleep(wait_time)
-        self._wait_for_response(wait_time, serial_command)
-        print(self._ser.in_waiting)
-        decoded_output = ''
-        while self._ser.in_waiting > 0:
-            decoded_output += self._ser.read(1).decode()
-
-        return decoded_output
     
     def _wait_for_response(self, wait_time, serial_command):
         waiting = 0
