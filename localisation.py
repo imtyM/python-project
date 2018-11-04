@@ -12,7 +12,7 @@ myDB = mongoDB('lab')
 processor = algorithms(myDB)
 
 while True:
-    fingerprint = myDevice.scan_position(5)
+    fingerprint = myDevice.scan_position(2)
 
     print(fingerprint)
 

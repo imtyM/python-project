@@ -149,7 +149,7 @@ class serialClass:
         print('Clearing buffer\n\nThe following was in the buffer: \n\n', decoded_output, '\nend clear\n')
 
 
-    def _collect_fingerprint(self, location, collection_time):
+    def _collect_fingerprint(self, collection_time):
         start_time = time.time()
         fingerprint = dict()
         while time.time() - start_time < collection_time:  
