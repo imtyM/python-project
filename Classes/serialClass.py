@@ -159,7 +159,6 @@ class serialClass:
 
             fingerprint = self._add_to_fingerprint(sample, fingerprint)
         return fingerprint
-    
     def _expect_OK(self, result):
         if result.find('OK') != -1 :
             return True
