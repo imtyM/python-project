@@ -20,7 +20,7 @@ class algorithms:
         cells = self._getCellsList(inputData)
         cell_permutations = self._getPermutations(cells)
         print('These are cell perms: ', cell_permutations)
-        if len(cell_permutations) == 0:
+        if len(cell_permutations[0]) == 0:
             return 'NO CELLS,NO lOCATION'
 
         while doc_count == 0 and deviation < 10 : 
