@@ -57,7 +57,7 @@ class serialClass:
         fingerprint_location = input('Please enter a location for the deep scan: ')
         fingerprints = []
         for i in range(iterations):
-            fingerprint = self._collect_fingerprint(fingerprint_location, collection_time)
+            fingerprint = self._collect_fingerprint(collection_time)
             print('\nIteration', i+1,'\n\nFingerprint', fingerprint)
 
             fingerprints.append(self._normalise_fingerprint_ave(fingerprint))
