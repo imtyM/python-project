@@ -21,7 +21,7 @@ class algorithms:
         cell_permutations = self._getPermutations(cells)
         print('These are cell perms: ', cell_permutations)
         if len(cell_permutations[0]) == 0:
-            return 'NO CELLS,NO lOCATION'
+            return 'NIL'
 
         while doc_count == 0 and deviation < 10 : 
             
@@ -69,9 +69,9 @@ class algorithms:
             for cellList in it.combinations(cells, 4):
                 permutations.append(list( cellList ))
 
-        if len(cells) > 3:
-            for cellList in it.combinations(cells, 3):
-                permutations.append(list( cellList ))
+        # if len(cells) > 3:
+        #     for cellList in it.combinations(cells, 3):
+        #         permutations.append(list( cellList ))
 
         return permutations
         
@@ -96,7 +96,7 @@ class algorithms:
                 print('Estimated common location as : ', common, 'count of :', doc_count, 'with deviation of : ', deviation)
                 os.system('spd-say '+ common)
                 return common
-        return 'NO LOCATION FOUND.'
+        return 'NIL'
                 
     
     def _buildQuery(self, cells, input_data, deviation, fieldString="primary_print."):
